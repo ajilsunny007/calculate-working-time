@@ -238,12 +238,18 @@
       const remaing = 28800 - totalEffectiveSeconds;
       const result = secondsToTime(totalEffectiveSeconds);
       const totalEffectivehours = Math.floor(totalEffectiveSeconds / 3600);
+
       var overtime = localStorage.getItem('overtime');
       if (totalEffectivehours >= 8 && overtime == 1) {
         var audio = new Audio("success.mp3");
         audio.play();
         localStorage.setItem("overtime", 0);
       }
+      
+      if (totalEffectivehours < 8 && overtime == 0) {
+        localStorage.setItem("overtime", 1);
+      }
+      
       document.getElementById("total-hours").textContent = result;
       if (remaing < 0) {
         document.getElementById("overtime").style.display = "block";
