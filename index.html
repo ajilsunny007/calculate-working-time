@@ -1,244 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculate Total Working Time</title>
-    <style>
-      /* styles.css */
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f0f0f0;
-      }
 
-      .container {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        width: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculate Total Working Time</title>
+  <style>
+    /* styles.css */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
 
-      label {
-        display: block;
-        margin: 10px 0 5px;
-      }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+    }
 
-      select {
-        width: 30%;
-        padding: 8px;
-        margin-bottom: 10px;
-        margin-left: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
 
-      input {
-        width: 90%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
+    select {
+      width: 30%;
+      padding: 8px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
 
-      button {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
+    input {
+      width: 90%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
 
-      label {
-        margin-bottom: 10px;
-      }
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-      button:hover {
-        background-color: #0056b3;
-      }
+    label {
+      margin-bottom: 10px;
+    }
 
-      #result {
-        margin-top: 20px;
-      }
+    button:hover {
+      background-color: #0056b3;
+    }
 
-      #total-hours {
-        font-size: larger;
-        color: green;
-        font-weight: bold;
-      }
-      #remaining-hours {
-        font-size: larger;
-        color: rgb(255, 0, 0);
-        font-weight: bold;
-      }
-      #punchout {
-        font-size: larger;
-        color: rgb(255, 94, 0);
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <p style="text-align: right; margin-bottom: 20px">
-        Remaing time: <span id="remaining-hours">00h 00m 00s</span>
+    #result {
+      margin-top: 20px;
+    }
+
+    #total-hours {
+      font-size: larger;
+      color: green;
+      font-weight: bold;
+    }
+
+    #remaining-hours {
+      font-size: larger;
+      color: rgb(255, 0, 0);
+      font-weight: bold;
+    }
+
+    #punchout {
+      font-size: larger;
+      color: rgb(255, 94, 0);
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div
+      id="overtime"
+      style="
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: larger;
+          color: green;
+          font-weight: bold;
+          display: none;
+        ">
+      <h2 style="margin-bottom: 10px">🚨 Time’s Up! 🚨</h2>
+      <p>
+        You’ve worked enough for today! Time to take a break and do nothing
+        for a while! 🛋️😂
       </p>
-      <h1>Calculate Total Working Time</h1>
-      <label for="effective-hours">Effective Hours Worked Per Day:</label>
-      <b>Hours</b
-      ><select id="hours"></select>
-      <b>Minutes</b
-      ><select id="minutes"></select>
-
-      <label for="last-login">Last Login Time:</label>
-      <input type="time" id="last-login" />
-
-      <button onclick="checkInput()" id="calculateButton">
-        Calculate Total Time
-      </button>
-
-      <div id="result">
-        <p>
-          Total Effective Hours Worked:
-          <span id="total-hours">00h 00m 00s</span>
-        </p>
-        <p style="margin-top: 10px">
-          Punchout time: <span id="punchout">00:00 am</span>
-        </p>
-      </div>
     </div>
+    <p id="remainingtime" style="text-align: right; margin-bottom: 20px">
+      Remaing time: <span id="remaining-hours">00h 00m 00s</span>
+    </p>
+    <h1>Calculate Total Working Time</h1>
+    <label for="effective-hours">Effective Hours Worked Per Day:</label>
+    <b>Hours</b><select id="hours"></select>
+    <b>Minutes</b><select id="minutes"></select>
 
-    <script>
-      // script.js
-      document.addEventListener("DOMContentLoaded", () => {
-        const hoursdropdown = document.getElementById("hours");
+    <label for="last-login">Last Login Time:</label>
+    <input type="time" id="last-login" />
 
-        // Create options from 1 to 12
-        for (let i = 0; i <= 12; i++) {
-          const option = document.createElement("option");
-          option.value = i;
-          option.textContent = i;
-          hoursdropdown.appendChild(option);
-        }
+    <button onclick="checkInput()" id="calculateButton">
+      Calculate Total Time
+    </button>
 
-        const minutesdropdown = document.getElementById("minutes");
+    <div id="result">
+      <p>
+        Total Effective Hours Worked:
+        <span id="total-hours">00h 00m 00s</span>
+      </p>
+      <p style="margin-top: 10px">
+        Punchout time: <span id="punchout">00:00 am</span>
+      </p>
+    </div>
+  </div>
 
-        // Create options from 1 to 12
-        for (let i = 0; i <= 59; i++) {
-          const option = document.createElement("option");
-          option.value = i;
-          option.textContent = i;
-          minutesdropdown.appendChild(option);
-        }
-      });
-      function secondsToTime(seconds) {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
+  <script>
+    // script.js
+    document.addEventListener("DOMContentLoaded", () => {
+      const hoursdropdown = document.getElementById("hours");
 
-        const hoursFormatted = String(hours).padStart(2, "0");
-        const minutesFormatted = String(minutes).padStart(2, "0");
-        const secsFormatted = String(secs).padStart(2, "0");
-
-        return `${hoursFormatted}h ${minutesFormatted}m ${secsFormatted}s`;
+      // Create options from 1 to 12
+      for (let i = 0; i <= 12; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        hoursdropdown.appendChild(option);
       }
 
-      function checkInput() {
-        const hoursDropdown = document.getElementById("hours");
-        const minutesDropdown = document.getElementById("minutes");
-        const lastLoginInput = document.getElementById("last-login").value;
+      const minutesdropdown = document.getElementById("minutes");
 
-        const effectiveHours = parseInt(hoursDropdown.value, 10);
-        const effectiveMinutes = parseInt(minutesDropdown.value, 10);
-
-        if (!lastLoginInput) {
-          alert("Please enter the last login time.");
-          return;
-        }
-
-        const lastLoginTime = new Date();
-        const [hours, minutes] = lastLoginInput.split(":").map(Number);
-        lastLoginTime.setHours(hours);
-        lastLoginTime.setMinutes(minutes);
-        lastLoginTime.setSeconds(0);
-
-        const currentTime = new Date();
-
-        if (lastLoginTime > currentTime) {
-          alert("Last login time cannot be in the future.");
-          return;
-        }
-        let interval = setInterval(() => {
-          document.getElementById("calculateButton").style.display = "none";
-          calculateTotalTime(interval); // Call the second function after completion
-        }, 1000);
+      // Create options from 1 to 12
+      for (let i = 0; i <= 59; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        minutesdropdown.appendChild(option);
       }
-      function calculateTotalTime(interval) {
-        const hoursDropdown = document.getElementById("hours");
-        const minutesDropdown = document.getElementById("minutes");
-        const lastLoginInput = document.getElementById("last-login").value;
+    });
 
-        const effectiveHours = parseInt(hoursDropdown.value, 10);
-        const effectiveMinutes = parseInt(minutesDropdown.value, 10);
+    function secondsToTime(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
 
-        if (!lastLoginInput) {
-          alert("Please enter the last login time.");
-          document.getElementById("calculateButton").style.display = "block";
-          clearInterval(interval);
-          return;
-        }
+      const hoursFormatted = String(hours).padStart(2, "0");
+      const minutesFormatted = String(minutes).padStart(2, "0");
+      const secsFormatted = String(secs).padStart(2, "0");
 
-        const lastLoginTime = new Date();
-        const [hours, minutes] = lastLoginInput.split(":").map(Number);
-        lastLoginTime.setHours(hours);
-        lastLoginTime.setMinutes(minutes);
-        lastLoginTime.setSeconds(0);
+      return `${hoursFormatted}h ${minutesFormatted}m ${secsFormatted}s`;
+    }
 
-        const currentTime = new Date();
+    function checkInput() {
+      const hoursDropdown = document.getElementById("hours");
+      const minutesDropdown = document.getElementById("minutes");
+      const lastLoginInput = document.getElementById("last-login").value;
 
-        if (lastLoginTime > currentTime) {
-          alert("Last login time cannot be in the future.");
-          document.getElementById("calculateButton").style.display = "block";
-          clearInterval(interval);
-          return;
-        }
+      const effectiveHours = parseInt(hoursDropdown.value, 10);
+      const effectiveMinutes = parseInt(minutesDropdown.value, 10);
 
-        const timeDifference = currentTime - lastLoginTime; // in milliseconds
-        const secondsWorked = Math.floor(timeDifference / 1000); // convert to seconds
-        const effectiveSecondsPerDay =
-          effectiveHours * 3600 + effectiveMinutes * 60;
-        const totalEffectiveSeconds = effectiveSecondsPerDay + secondsWorked;
-        const remaing = 28800 - totalEffectiveSeconds;
-        const result = secondsToTime(totalEffectiveSeconds);
-        const totalEffectivehours = Math.floor(totalEffectiveSeconds / 3600);
-        // if (totalEffectivehours >= 8) {
-        //   var audio = new Audio("Youz.mp3");
-        //   audio.play();
-        //   document.getElementById("calculateButton").style.display = "block";
-        //   clearInterval(interval);
-        // }
-        document.getElementById("total-hours").textContent = result;
+      if (!lastLoginInput) {
+        alert("Please enter the last login time.");
+        return;
+      }
 
+      const lastLoginTime = new Date();
+      const [hours, minutes] = lastLoginInput.split(":").map(Number);
+      lastLoginTime.setHours(hours);
+      lastLoginTime.setMinutes(minutes);
+      lastLoginTime.setSeconds(0);
+
+      const currentTime = new Date();
+
+      if (lastLoginTime > currentTime) {
+        alert("Last login time cannot be in the future.");
+        return;
+      }
+      localStorage.setItem("overtime", 1);
+      let interval = setInterval(() => {
+        document.getElementById("calculateButton").style.display = "none";
+        calculateTotalTime(interval); // Call the second function after completion
+      }, 1000);
+    }
+
+    function calculateTotalTime(interval) {
+      const hoursDropdown = document.getElementById("hours");
+      const minutesDropdown = document.getElementById("minutes");
+      const lastLoginInput = document.getElementById("last-login").value;
+
+      const effectiveHours = parseInt(hoursDropdown.value, 10);
+      const effectiveMinutes = parseInt(minutesDropdown.value, 10);
+
+      if (!lastLoginInput) {
+        alert("Please enter the last login time.");
+        document.getElementById("calculateButton").style.display = "block";
+        clearInterval(interval);
+        return;
+      }
+
+      const lastLoginTime = new Date();
+      const [hours, minutes] = lastLoginInput.split(":").map(Number);
+      lastLoginTime.setHours(hours);
+      lastLoginTime.setMinutes(minutes);
+      lastLoginTime.setSeconds(0);
+
+      const currentTime = new Date();
+
+      if (lastLoginTime > currentTime) {
+        alert("Last login time cannot be in the future.");
+        document.getElementById("calculateButton").style.display = "block";
+        clearInterval(interval);
+        return;
+      }
+
+      const timeDifference = currentTime - lastLoginTime; // in milliseconds
+      const secondsWorked = Math.floor(timeDifference / 1000); // convert to seconds
+      const effectiveSecondsPerDay = effectiveHours * 3600 + effectiveMinutes * 60;
+      const totalEffectiveSeconds = effectiveSecondsPerDay + secondsWorked;
+      const remaing = 28800 - totalEffectiveSeconds;
+      const result = secondsToTime(totalEffectiveSeconds);
+      const totalEffectivehours = Math.floor(totalEffectiveSeconds / 3600);
+      var overtime = localStorage.getItem('overtime');
+      if (totalEffectivehours >= 8 && overtime == 1) {
+        var audio = new Audio("success.mp3");
+        audio.play();
+        localStorage.setItem("overtime", 0);
+      }
+      document.getElementById("total-hours").textContent = result;
+      if (remaing < 0) {
+        document.getElementById("overtime").style.display = "block";
+        document.getElementById("remainingtime").style.display = "none";
+      } else {
+        document.getElementById("overtime").style.display = "none";
+        document.getElementById("remainingtime").style.display = "block";
         const resultRemaining = secondsToTime(remaing);
         document.getElementById("remaining-hours").textContent =
           resultRemaining;
-
-        var newDateObj = new Date(
-          currentTime.getTime() + remaing * 1000
-        ).toLocaleDateString("en-GB", {
-          hour12: "true",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        document.getElementById("punchout").textContent = newDateObj;
       }
-    </script>
-  </body>
+      var newDateObj = new Date(
+        currentTime.getTime() + remaing * 1000
+      ).toLocaleDateString("en-GB", {
+        hour12: "true",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      document.getElementById("punchout").textContent = newDateObj;
+    }
+  </script>
+</body>
+
 </html>
