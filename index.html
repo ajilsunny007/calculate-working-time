@@ -5,6 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculate Total Working Time</title>
     <style>
+      @media (max-width: 600px) {
+        body {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .container {
+          max-width: 100%;
+          width: 100%;
+          min-width: 0;
+          height: auto;
+          box-sizing: border-box;
+          margin-right: 0;
+          padding: 10px;
+        }
+        #toggleDiv {
+          margin-left: 0;
+          padding: 10px;
+        }
+        .weekly-switch-row {
+          position: static;
+          margin-top: 20px;
+          justify-content: flex-end;
+        }
+        select, input, button {
+          width: 100% !important;
+          min-width: 0;
+          box-sizing: border-box;
+        }
+        label {
+          margin-left: 0;
+        }
+        #weekly-calculation-button {
+          width: 100%;
+          margin: 10px 0;
+        }
+      }
       /* styles.css */
       body {
         font-family: Arial, sans-serif;
@@ -23,6 +59,8 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         max-width: 500px;
         width: 100%;
+        height: 650px;
+        position: relative;
       }
 
       label {
@@ -85,6 +123,84 @@
         color: rgb(255, 94, 0);
         font-weight: bold;
       }
+
+      #toggleDiv {
+        display: none;
+        padding: 20px;
+        border-radius: 5px;
+        margin-left: 5%;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+        margin-left: 10px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #4caf50;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .weekly-switch-row {
+        position: absolute;
+        right: 20px;
+        top: 0px;
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+      }
+      .weekly-label {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+      #weekely-worked-days {
+        width: 55px;
+      }
+
+      #weekly-calculation-button {
+        float: right;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: bold;
+        width: 100%;
+        margin: 20px 0px;
+      }
     </style>
   </head>
 
@@ -107,7 +223,7 @@
           for a while! 🛋️😂
         </p>
       </div>
-      <p id="remainingtime" style="text-align: right; margin-bottom: 20px">
+      <p id="remainingtime" style="text-align: right; margin-bottom: 20px;margin-top: 40px;">
         Remaing time: <span id="remaining-hours">00h 00m 00s</span>
       </p>
       <h1>Calculate Total Working Time</h1>
@@ -139,10 +255,73 @@
         <p style="margin-top: 10px">
           Punchout time: <span id="punchout">00:00 am</span>
         </p>
+
+        <div class="weekly-switch-row">
+          <span class="weekly-label">Week Calculator</span>
+          <label class="switch">
+            <input type="checkbox" id="toggleSwitch" onclick="toggleDiv()" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="toggleDiv">
+      <h1 style="margin-top: 5px;">Weekely Total Working Time</h1>
+      <div style="display: flex; align-items: center">
+        <label style="margin-right: 10px">Worked days</label>
+        <select id="weekely-worked-days"></select>
+      </div>
+
+      <table style="width: 100%; text-align: center;">
+        <thead>
+          <tr>
+        <th style="width: 100px; text-align: center;"><h3>Day</h3></th>
+        <th colspan="2" style="width: 200px; text-align: center;"><h3>Effective Hours</h3></th>
+        <th colspan="2" style="width: 200px; text-align: center;"><h3>Gross Hours</h3></th>
+          </tr>
+          <tr>
+        <th style="text-align: center;"></th>
+        <th style="text-align: center;">Hours</th>
+        <th style="text-align: center;">Minutes</th>
+        <th style="text-align: center;">Hours</th>
+        <th style="text-align: center;">Minutes</th>
+          </tr>
+        </thead>
+        <tbody id="weekly-table-body">
+        </tbody>
+      </table>
+
+      <button id="weekly-calculation-button" onclick="calculateWeekly()">Calculate</button>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 80px;">
+        <h2 style="margin: 0;">Total Effective Hours</h2>
+        <h2 style="margin: 0;">Total Gross Hours</h2>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <h3 style="margin: 0; color: green;" id="weekly-total-effective-hours">00h 00m 00s</h3>
+        <h3 style="margin: 0;color:green " id="weekly-total-gross-hours">00h 00m 00s</h3>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+        <h3 style="margin: 0;">Remaing Hours</h3>
+        <h3 style="margin: 0;">Remaing Hours</h3>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <h3 style="margin: 0; color: red;" id="weekly-remaining-effective-hours">00h 00m 00s</h3>
+        <h3 style="margin: 0;color:red " id="weekly-remaining-gross-hours">00h 00m 00s</h3>
       </div>
     </div>
 
     <script>
+      // Dynamically update weekly table rows based on dropdown
+      function toggleDiv() {
+        const checkbox = document.getElementById("toggleSwitch");
+        const div = document.getElementById("toggleDiv");
+
+        div.style.display = checkbox.checked ? "block" : "none";
+      }
+
       // script.js
       document.addEventListener("DOMContentLoaded", () => {
         const hoursdropdown = document.getElementById("hours");
@@ -159,13 +338,46 @@
           option.textContent = i;
           minutesdropdown.appendChild(option);
         }
+        const weekelyWorkedDaysDropdown = document.getElementById(
+          "weekely-worked-days"
+        );
+        for (let i = 1; i <= 5; i++) {
+          const option = document.createElement("option");
+          option.value = i;
+          option.textContent = i;
+          if (i === 5) option.selected = true;
+          weekelyWorkedDaysDropdown.appendChild(option);
+        }
+
+        const weeklyTableBody = document.getElementById("weekly-table-body");
+        function updateWeeklyRows() {
+          const days = parseInt(weekelyWorkedDaysDropdown.value, 10);
+          weeklyTableBody.innerHTML = "";
+          for (let i = 1; i <= days; i++) {
+            weeklyTableBody.innerHTML += `
+              <tr>
+                <td style="text-align: center;">${i}</td>
+                <td><input type="number" id="effH${i}" min="0" style="width: 50px; text-align: center;"></td>
+                <td><input type="number" id="effM${i}" min="0" style="width: 50px; text-align: center;"></td>
+                <td><input type="number" id="groH${i}" min="0" style="width: 50px; text-align: center;"></td>
+                <td><input type="number" id="groM${i}" min="0" style="width: 50px; text-align: center;"></td>
+              </tr>
+            `;
+          }
+        }
+        weekelyWorkedDaysDropdown.addEventListener("change", updateWeeklyRows);
+        updateWeeklyRows(); // Initial render
+      
       });
 
       function secondsToTime(seconds) {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
-        return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`;
+        return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(
+          2,
+          "0"
+        )}m ${String(secs).padStart(2, "0")}s`;
       }
 
       function getTimeFromInput(input) {
@@ -242,15 +454,22 @@
           return;
         }
         const secondsWorked = Math.floor((currentTime - lastLoginTime) / 1000);
-        const effectiveSecondsPerDay = effectiveHours * 3600 + effectiveMinutes * 60;
+        const effectiveSecondsPerDay =
+          effectiveHours * 3600 + effectiveMinutes * 60;
         const totalEffectiveSeconds = effectiveSecondsPerDay + secondsWorked;
         const totalEffectivehours = Math.floor(totalEffectiveSeconds / 3600);
-        const totalGrossSeconds = Math.floor((currentTime - firstLoginTime) / 1000);
+        const totalGrossSeconds = Math.floor(
+          (currentTime - firstLoginTime) / 1000
+        );
         const totalgrosshours = Math.floor(totalGrossSeconds / 3600);
         const remaing = 28800 - totalEffectiveSeconds;
         const gremaing = 32400 - totalGrossSeconds;
         const overtime = localStorage.getItem("overtime");
-        if (totalEffectivehours >= 8 && totalgrosshours >= 9 && overtime == "1") {
+        if (
+          totalEffectivehours >= 8 &&
+          totalgrosshours >= 9 &&
+          overtime == "1"
+        ) {
           new Audio("success.mp3").play();
           localStorage.setItem("overtime", 0);
         }
@@ -259,7 +478,7 @@
         }
         updateText("total-hours", secondsToTime(totalEffectiveSeconds));
         updateText("total-gross-hours", secondsToTime(totalGrossSeconds));
-        
+
         if (remaing < gremaing) {
           updateText("remaining-hours", secondsToTime(gremaing));
         } else {
@@ -268,12 +487,52 @@
         toggleDisplay("overtime", remaing < 0 && gremaing < 0);
         toggleDisplay("remainingtime", !(remaing < 0 && gremaing < 0));
         // Calculate punchout time
-        const punchOutDate = new Date(firstLoginTime.getTime() + 9 * 60 * 60 * 1000);
-        const punchOutStr = punchOutDate.toLocaleTimeString("en-GB", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        const punchOutDate = new Date(
+          firstLoginTime.getTime() + 9 * 60 * 60 * 1000
+        );
+        const punchOutStr = punchOutDate.toLocaleTimeString("en-GB", {
+          hour12: true,
+          hour: "2-digit",
+          minute: "2-digit",
+        });
         const newDateObj = new Date(currentTime.getTime() + remaing * 1000);
-        const newDateStr = newDateObj.toLocaleTimeString("en-GB", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        const newDateStr = newDateObj.toLocaleTimeString("en-GB", {
+          hour12: true,
+          hour: "2-digit",
+          minute: "2-digit",
+        });
         updateText("punchout", remaing < gremaing ? punchOutStr : newDateStr);
       }
+    
+    function calculateWeekly(){
+        const weekelyWorkedDaysDropdown = document.getElementById(
+          "weekely-worked-days"
+        );
+        const days = parseInt(weekelyWorkedDaysDropdown.value, 10);
+        let totalEffectiveSeconds = 0;
+        let totalGrossSeconds = 0;
+
+        for (let i = 1; i <= days; i++) {
+          const effH = parseInt(document.getElementById(`effH${i}`).value, 10) || 0;
+          const effM = parseInt(document.getElementById(`effM${i}`).value, 10) || 0;
+          const groH = parseInt(document.getElementById(`groH${i}`).value, 10) || 0;
+          const groM = parseInt(document.getElementById(`groM${i}`).value, 10) || 0;
+
+          totalEffectiveSeconds += effH * 3600 + effM * 60;
+          totalGrossSeconds += groH * 3600 + groM * 60;
+        }
+
+        updateText("weekly-total-effective-hours", secondsToTime(totalEffectiveSeconds));
+        updateText("weekly-total-gross-hours", secondsToTime(totalGrossSeconds));
+
+        const totalWeeklyEffectiveHoursNeeded =days *8 * 3600; // 8 hours per day
+        const totalWeeklyGrossHoursNeeded =days *9 * 3600
+        const remaingEff = totalWeeklyEffectiveHoursNeeded - totalEffectiveSeconds;
+        const remaingGro = totalWeeklyGrossHoursNeeded - totalGrossSeconds;
+
+        updateText("weekly-remaining-effective-hours", secondsToTime(remaingEff));
+        updateText("weekly-remaining-gross-hours", secondsToTime(remaingGro));
+    }
     </script>
   </body>
 </html>
