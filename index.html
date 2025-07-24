@@ -89,7 +89,7 @@
       }
 
       #toggleDiv {
-        display: none;
+        display: block;
         padding: 20px;
         border-radius: 5px;
         margin-left: 5%;
@@ -547,12 +547,13 @@
 
         const totalWeeklyEffectiveHoursNeeded = days * 8 * 3600; // 8 hours per day
         const totalWeeklyGrossHoursNeeded = days * 9 * 3600;
-        const remaingEff =
-          totalWeeklyEffectiveHoursNeeded - totalEffectiveSeconds;
-        const remaingGro = totalWeeklyGrossHoursNeeded - totalGrossSeconds;
+        let remaingEff =totalWeeklyEffectiveHoursNeeded - totalEffectiveSeconds;
+        let remaingGro = totalWeeklyGrossHoursNeeded - totalGrossSeconds;
         if (remaingEff < 0) remaingEff = 0;
         if (remaingGro < 0) remaingGro = 0;
-
+        console.log(
+          `Remaining Effective Hours: ${remaingEff}, Remaining Gross Hours: ${remaingGro}`
+        );
         updateText(
           "weekly-remaining-effective-hours",
           secondsToTime(remaingGro)
