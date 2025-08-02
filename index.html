@@ -656,7 +656,8 @@
         new Audio("success.mp3").play();
         localStorage.setItem("overtime", 0);
       }
-      if (totalEffectivehours < 8 && overtime == "0") {
+
+      if ((totalEffectivehours < 8 || totalgrosshours < 9) && overtime == "0") {
         localStorage.setItem("overtime", 1);
       }
       updateText("total-hours", secondsToTime(totalEffectiveSeconds));
